@@ -24,9 +24,9 @@ uint8_t s_buffer[3];
 #define DIRECTION_RIGHT 0b00000100
 #define DIRECTION_LEFT 0b00001000
 
-#define POSITION_CENTER 370
-#define POSITION_LEFT 0
-#define POSITION_RIGHT 730
+#define POSITION_CENTER 382
+#define POSITION_RIGHT 29
+#define POSITION_LEFT 681
 #define POSITION_INACCURACY 20
 
 void steerRight() {
@@ -95,5 +95,5 @@ void loop() {
   if (hw_serial.available() == 3) {
     hw_serial.readBytes(s_buffer, 3);
   }
-  hw_serial.println(analogRead(STEERING_ANGLE_SENSOR_PIN));
 }
+
