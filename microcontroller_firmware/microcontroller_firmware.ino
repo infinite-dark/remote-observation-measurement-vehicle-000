@@ -31,7 +31,7 @@ uint8_t s_buffer[3] = { 0 };
 #define POSITION_CENTER 382
 #define POSITION_RIGHT 29
 #define POSITION_LEFT 681
-#define POSITION_INACCURACY 20
+#define POSITION_READOUT_MARGIN 30
 
 void steerRight() {
   digitalWrite(STEERING_PIN_IA1, HIGH);
@@ -49,7 +49,7 @@ void steerStop() {
 }
 
 void steer() {
-  uint8_t dir = (s_buffer[0] >> 2) & STEERING_DIRECTION_MASK;
+  uint8_t dir = s_buffer[0] & STEERING_DIRECTION_MASK;
   uint8_t turn = s_buffer[1];
 
   int position = analogRead(STEERING_ANGLE_SENSOR_PIN);
@@ -71,7 +71,7 @@ void steer() {
 
   delta = position - target;
 
-  if (abs(delta) > POSITION_INACCURACY) {
+  if (abs(delta) > POSITION_READOUT_MARGIN) {
     if (delta >= 0) {
       steerRight();
     }
@@ -126,9 +126,11 @@ void drive() {
 
 //---------------FUNCTIONALITY---------------//
 
-void receiveCommands() {
-  if (hw_serial.available() == 3) {
+void listen() {
+  if (hw_serial.available() % 3 == 0) {
     hw_serial.readBytes(s_buffer, 3);
+    hw_serial.write(0);
+    Serial.println(String(s_buffer[0]) + ", " + String(s_buffer[1]) + ", " + String(s_buffer[2]));
   }
 }
 
@@ -140,10 +142,11 @@ void setup() {
   pinMode(DRIVE_SPEED_PIN, OUTPUT);
 
   hw_serial.begin(115200);
+  Serial.begin(115200);
 }
 
 void loop() {
-  receiveCommands();
+  listen();
   steer();
   drive();
 }
