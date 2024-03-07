@@ -1,1 +1,1 @@
-# Remote Observation and Measurement Vehicle (ver. 0)
+# Remote Observation and Measurement Vehicle ver. 0
