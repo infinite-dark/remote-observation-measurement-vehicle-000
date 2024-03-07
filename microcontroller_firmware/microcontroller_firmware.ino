@@ -1,36 +1,39 @@
-//---------------OUTPUTS---------------//
+#define STEERING_PIN_IA1 PA9
+#define STEERING_PIN_IA2 PA10
 
-#define STEERING_PIN_IA1 PB6
-#define STEERING_PIN_IA2 PB1
+#define DRIVE_DIRECTION_PIN PB5
+#define DRIVE_SPEED_PIN PA11
 
-#define DRIVE_DIRECTION_PIN PB7
-#define DRIVE_SPEED_PIN PB0
+#define INTERRUPT_PIN PB5
 
-//---------------INPUTS---------------//
-
-#define STEERING_ANGLE_SENSOR_PIN PA2
-#define BATTERY_VOLTAGE_LEVEL_PIN PA7
-
-//---------------SERIAL---------------//
+#define STEERING_ANGLE_SENSOR_PIN PA5
+#define BATTERY_VOLTAGE_LEVEL_PIN PA0
 
 #define STEERING_DIRECTION_MASK 0b00001100
 #define DRIVE_DIRECTION_MASK 0b00000011
 
-#define RX PA10
-#define TX PA9
+#define RX_CMD PA3
+#define TX_CMD PA2
 
-HardwareSerial hw_serial = HardwareSerial(RX, TX);
-uint8_t s_buffer[3] = { 0 };
+#define MINIMUM_BATTERY_ADC_VOLTAGE 753
+#define MAXIMUM_BATTERY_ADC_VOLTAGE 856
 
-//---------------STEERING---------------//
+#define BATTERY_TX_DELAY 500
+
+#define RX_DAT PB7
+#define TX_DAT PB6
+
+static uint8_t s_buffer[3] = { 0 };
+HardwareSerial cmd_serial = HardwareSerial(RX_CMD, TX_CMD);
+HardwareSerial dat_serial = HardwareSerial(RX_DAT, TX_DAT);
 
 #define DIRECTION_CENTER 0b00000000
 #define DIRECTION_RIGHT 0b00000100
 #define DIRECTION_LEFT 0b00001000
 
-#define POSITION_CENTER 382
-#define POSITION_RIGHT 29
-#define POSITION_LEFT 681
+#define POSITION_CENTER 245
+#define POSITION_RIGHT 0
+#define POSITION_LEFT 473
 #define POSITION_READOUT_MARGIN 30
 
 void steerRight() {
@@ -53,7 +56,7 @@ void steer() {
   uint8_t turn = s_buffer[1];
 
   int position = analogRead(STEERING_ANGLE_SENSOR_PIN);
-  int target, delta;
+  int target{0}, delta{0};
 
   switch (dir) {
     case DIRECTION_CENTER:
@@ -64,6 +67,7 @@ void steer() {
       break;
     case DIRECTION_LEFT:
       target = POSITION_CENTER + turn/100.0 * (POSITION_LEFT - POSITION_CENTER);
+      break;
     default:
       target = position;
       break;
@@ -83,8 +87,6 @@ void steer() {
     steerStop();
   }
 }
-
-//---------------DRIVE---------------//
 
 #define DRIVE_DIRECTION_FORWARD 0b00000010
 #define DRIVE_DIRECTION_REVERSE 0b00000001
@@ -124,13 +126,35 @@ void drive() {
   analogWrite(DRIVE_SPEED_PIN, speed);
 }
 
-//---------------FUNCTIONALITY---------------//
+float readBattery() {
+  return 100.0 * (analogRead(BATTERY_VOLTAGE_LEVEL_PIN) - MINIMUM_BATTERY_ADC_VOLTAGE) / (MAXIMUM_BATTERY_ADC_VOLTAGE - MINIMUM_BATTERY_ADC_VOLTAGE);
+}
 
-void listen() {
-  if (hw_serial.available() % 3 == 0) {
-    hw_serial.readBytes(s_buffer, 3);
-    hw_serial.write(0);
-    Serial.println(String(s_buffer[0]) + ", " + String(s_buffer[1]) + ", " + String(s_buffer[2]));
+unsigned long int prevRXtime{0}, lastRXtime{0};
+unsigned long int prevTXtime{0}, lastTXtime{0};
+
+bool keep_driving = true;
+
+void talk() {
+  if (cmd_serial.available() >= 3) {
+    cmd_serial.readBytes(s_buffer, 3);
+
+    prevRXtime = lastRXtime;
+    lastRXtime = millis();
+  }
+
+  if (millis() - lastRXtime > 1000 || s_buffer[0] & 0b10000000) {
+    keep_driving = false;
+  }
+  else {
+    keep_driving = true;
+  }
+
+  if (millis() - lastTXtime > BATTERY_TX_DELAY) {
+    float battery_percentage = readBattery();
+    dat_serial.println((int)battery_percentage);
+    prevTXtime = lastTXtime;
+    lastTXtime = millis();
   }
 }
 
@@ -141,12 +165,18 @@ void setup() {
   pinMode(DRIVE_DIRECTION_PIN, OUTPUT);
   pinMode(DRIVE_SPEED_PIN, OUTPUT);
 
-  hw_serial.begin(115200);
-  Serial.begin(115200);
+  cmd_serial.begin(115200);
+  dat_serial.begin(115200);
 }
 
 void loop() {
-  listen();
-  steer();
-  drive();
+  talk();
+  if (keep_driving){
+    drive();
+    steer();
+  }
+  else {
+    driveStop();
+    steerStop();
+  }
 }
