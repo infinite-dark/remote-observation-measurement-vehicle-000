@@ -17,9 +17,7 @@ The main purpose of this project was educational, since the project encompasses 
 
 I am aware of the fact that this project is, lightly speaking, sub-optimal (or rather objectively terrible), however it is the best that I was able to do while being short on time - within a month or two - and learning from scratch.
 
-The ideal solution would've been to use the C/C++ programming languages with dedicated libraries like ROS, STM32 HAL / AVR LibC and Linux kernel libraries, while also utilizing more adequate protocols, such as UDP and RTSP, and also more adequate hardware.
-
-Future improvements are planned as my next private project (that's why this repository is marked as "version 0").
+The ideal solution would've been to use the C/C++ programming languages with dedicated libraries like ROS, STM32 HAL / AVR LibC and Linux kernel libraries, while also utilizing more adequate protocols, such as UDP and RTSP, and also more adequate hardware. Future improvements are planned as part of my next private project (that is why this repository is marked as "version 0").
 
 The images below present my work.
 
@@ -40,3 +38,17 @@ The images below present my work.
 >
 > Figure 4: The finished vehicle.
 ---
+
+Copyright Notice - Important.
+---
+Please note, while I strive to respect all legal obligations, I am not a legal expert and therefore I am unable to properly address the licensing and other legal issues potentially concerning this repo.
+
+  - Author: The code present in this repository was written by me based on publicly available information and documentations.
+  - Licensing: This project is open-source (I suppose?). The respective licenses of the used components apply (in whatever way the law says they should I guess? I dunno, don't ask me.). All jokes aside, respect the licenses!
+  - Purpose: This project was made for my own, personal, educational use.
+  - Property and Rights: I do not own any rights to the used libraries or other software components (in part or as a whole) used in this project.
+  - Usage: The software is NOT INTENDED for use in any way WHATSOEVER. I do NOT provide any warranty for the software and disclaim any liability for its use.
+
+My intention for publishing this project on GitHub was purely technical - to share the code without resorting to manually adding project collaborators. The problem is that GitHub doesn't allow for "unlisted" repositories in the same way as, for example, YouTube allows for "unlisted" videos. I'm therefore forced to publish the repo even if I do not want to do that whatsoever (especially considering the legal issues).
+
+No copyright or intellectual property infringement is intended.
