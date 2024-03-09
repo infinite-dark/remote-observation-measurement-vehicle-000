@@ -11,7 +11,7 @@ The software consists of three main pieces written either in Python or using the
   2. On-board computer software.
   3. Remote control app.
 
-I used libraries and/or modules like Qt, OpenCV, Adafruit CircuitPython, PIL, gpiod, numpy, socket, pysierial, psutil and some other parts of the Python standard library. In addition, several Linux programs, such as GStreamer, Hostapd, udhcpd and crontab, were used.
+I used libraries and/or modules like Qt, OpenCV, Adafruit CircuitPython, PIL, gpiod, numpy, socket, pyserial, psutil and some other parts of the Python standard library. In addition, several Linux programs, such as GStreamer, Hostapd, udhcpd and crontab, were used.
 
 The main purpose of this project was educational, since the project encompasses topics from outside my main field of study.
 
