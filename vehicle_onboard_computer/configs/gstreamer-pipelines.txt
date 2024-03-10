@@ -1,0 +1,5 @@
+[Transmitter]
+v4l2src device=/dev/video# ! image/jpeg,format=MJPG,width=1280,height=720,framerate=30/1 ! tcpserversink host=#### port=####
+
+[Receiver]
+tcpclientsrc host=#### port=#### ! decodebin ! videoconvert ! autovideosink sync=false
