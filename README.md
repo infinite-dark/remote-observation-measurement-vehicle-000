@@ -39,7 +39,7 @@ The images below present my work.
 > Figure 4: The finished vehicle.
 ---
 
-Copyright Notice - Important.
+Copyright Notice - Important
 ---
 Please note, while I strive to respect all legal obligations, I am not a legal expert and therefore I am unable to properly address the licensing and other legal issues potentially concerning this repo.
 
