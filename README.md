@@ -44,7 +44,7 @@ Copyright Notice - Important
 Please note, while I strive to respect all legal obligations, I am not a legal expert and therefore I am unable to properly address the licensing and other legal issues potentially concerning this repo.
 
   - Author: The code present in this repository was written by me based on publicly available information and documentations.
-  - Licensing: This project is open-source (I suppose?). The respective licenses of the used components apply (in whatever way the law says they should I guess? I dunno, don't ask me.). All jokes aside, respect the licenses!
+  - Licensing: This project is open-source (I suppose?). The respective licenses of the used components apply (in whatever way the law says they should I guess? I dunno, don't ask me.). Just respect the licenses...
   - Purpose: This project was made for my own, personal, educational use.
   - Property and Rights: I do not own any rights to the used libraries or other software components (in part or as a whole) used in this project.
   - Usage: The software is NOT INTENDED for use in any way WHATSOEVER. I do NOT provide any warranty for the software and disclaim any liability for its use.
